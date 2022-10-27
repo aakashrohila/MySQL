@@ -665,7 +665,13 @@ Now, you will perform some tasks that will give you a broader understanding of t
 +---------------+-------------------+---------------------+----------------------+*/
 -- Type your code below:
 
-
+SELECT genre,
+		avg(duration) as avg_duration
+from movie m 
+JOIN genre g 
+ON m.id= g.movie_id
+GROUP BY genre
+ORDER BY genre;
 
 
 
@@ -769,7 +775,7 @@ on rm.movie_id = m.id
 join ratings r
 on r.movie_id = rm.movie_id
 where rm.category = 'actress'
-group by actress_name
+group by actress_name;
 
 
 /* Q29. Get the following details for top 9 directors (based on number of movies)
@@ -801,9 +807,22 @@ Format:
 --------------------------------------------------------------------------------------------*/
 -- Type you code below:
 
-
-
-
-
-
-
+select dm.name_id as director_id,
+		n.name as director_name,
+		count(dm.name_id) as number_of_movies,
+		avg(r.avg_rating) as avg_rating,
+		sum(r.total_votes) as total_votes , 
+		min(r.avg_rating) as min_rating ,
+        max(r.avg_rating) as max_rating,
+        sum(m.duration) as Total_Duration
+        
+from director_mapping as dm 
+join names n
+on n.id = dm.name_id
+join movie m
+on m.id = dm.movie_id
+join ratings r
+on r.movie_id = dm.movie_id
+group by dm.name_id
+order by number_of_movies desc
+limit 9;
